@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title> Covid-19 diary</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100;500&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"
+        integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+</head>
+
+
+<body style="background-color: #6C87D9; ">
+
+    <div class="container text-center mt-5" style=" color: #02060D; height: 85vh;">
+
+        <div id="titulo">
+            <h1> POR COVID-19 EN ESPAÑA</h1>
+        </div>
+        <div>
+            <br>
+
+            <div id="primero">
+                <h1 id="dataDia" style="color: #2A3340;"></h1>
+            </div>
+
+            <br>
+
+            <div id="segundo" >
+                <h1 id="dataSemana" style="color: #2A3340;"></h1>
+            </div>
+
+            <br>
+
+            <div id="tercero" >
+                <h1 id="dataMes" style="color: #2A3340;"></h1>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <footer class="bg-light text-center text-lg-start">
+        <div class="text-center pt-3 " style="background-color: #8B96D9">
+            <p id="fecha"></p>
+            <p id="extraido"></p>
+        </div>
+    </footer>
+
+
+
+
+
+
+</body>
+
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        init()
+
+
+        function init() {
+            var url = "https://api.covid19api.com/dayone/country/spain";
+            // var url = "https://api.covid19api.com/live/country/spain/status/confirmed/date/2020-02-07T13:13:30Z";
+            // https://www.juntadeandalucia.es/institutodeestadisticaycartografia/badea/operaciones/consulta/anual/44088?CodOper=b3_2314&codConsulta=44088
+
+            $.get(url, function (data) {
+
+                muertos_dia = data[data.length - 1].Deaths - data[data.length - 4].Deaths;
+
+                muertos_semana = data[data.length - 1].Deaths - data[data.length - 8].Deaths;
+
+                muertos_mes = data[data.length - 1].Deaths - data[data.length - 31].Deaths;
+
+
+                //hacer un for y sumar
+                // recovered_semana=data[data.length-1].Recovered-data[data.length-8].Recovered;
+                // confirmados_semana=data[data.length-1].Confirmed-data[data.length-8].Confirmed;
+
+
+                dataSemana = ` <p>1 muerto cada ${Math.round((10080 / muertos_semana) * 100) / 100} minutos en la última semana</p>`
+                dataDia = ` <p>1 muerto cada ${Math.round((1440 / muertos_dia) * 100) / 100} minutos en el último día</p>`
+                dataMes = ` <p>1 muerto cada ${Math.round((43800 / muertos_mes) * 100) / 100} minutos en el último mes</p>`
+
+
+                extraido = ` <p>Datos extraidos de https://api.covid19api.com/</p>`
+                fecha = ` <p>Fecha de actualización: ${data[data.length - 1].Date}</p>`
+
+                $("#dataSemana").html(dataSemana);
+                $("#dataDia").html(dataDia);
+                $("#dataMes").html(dataMes);
+                $("#extraido").html(extraido);
+                $("#fecha").html(fecha);
+
+
+            })
+
+        }
+
+    })
+
+</script>
+
+
+
+</html>
